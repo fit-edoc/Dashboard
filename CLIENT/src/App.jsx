@@ -6,6 +6,7 @@ import { useData } from './context/Datacontext'
 import { Route,Routes } from 'react-router-dom'
 import Dashboard from './Dashboard/Dashboard'
 import SinglePage from './Dashboard/SinglePage'
+import NotFound from './Components/NotFound'
 
 function App() {
  
@@ -17,6 +18,8 @@ function App() {
    <Routes>
     <Route path='/' element={<Dashboard/>}/>
     <Route path={`/single/:id`}  element={<SinglePage/>}/>
+    <Route  path='*' element={<NotFound/>}/>
+
    </Routes>
    
    </>
