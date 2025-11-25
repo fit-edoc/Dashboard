@@ -95,8 +95,8 @@ const CampaignTable = ({ campaign }) => {
   const navigate = useNavigate()
   const { getStreamsById } = useData();
 
-  const handleClick = (id) => {
-    getStreamsById(id);
+  const handleClick = async(id) => {
+   await getStreamsById(id);
     navigate(`/single/${id}`);
  
     

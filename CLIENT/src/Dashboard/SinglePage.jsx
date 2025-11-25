@@ -66,6 +66,7 @@ const getStatusIcon = (status) => {
   const { selectcampaign, campaign } = useData();
 
 
+  
   return (
  <div className="flex min-h-screen bg-gradient-to-b to-[#004aad] via-[#98c4ff] from-teal-50">
 

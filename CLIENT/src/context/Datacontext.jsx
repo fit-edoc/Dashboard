@@ -8,7 +8,7 @@ export const DataProdiver = ({ children }) => {
 
     // --- STATE ---
     const [campaign, setCampaign] = useState([]);
-    const [selectcampaign,setSelectCampaign] = useState([])
+    const [selectcampaign,setSelectCampaign] = useState(null)
     const [streams, setStreams] = useState(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
