@@ -158,7 +158,7 @@ const CampaignTable = ({ campaign }) => {
           <tbody className=" bg-gradient-to-b  via-[#98c4ff] from-teal-50 backdrop-blur-sm divide-y  divide-gray-700">
             {campaign.map((campaign) => (
               <tr
-                onClick={() => handleClick(campaign.id)}
+             
                 key={campaign.id}
                 className="hover:bg-[#597a827b]  transition duration-150"
               >
@@ -212,10 +212,10 @@ const CampaignTable = ({ campaign }) => {
                 {/* Conversions */}
                 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
-               <Link to={"/single"}>
+             
                
                
-              <button className="px-2 py-2 rounded-full shadow-[0px_1px_2px_0.5px_black] bg-gradient-to-br from-[#ffffff] to-[#7bb4ff]"><MousePointer2 className="rotate-90"/></button>  </Link> 
+              <button    onClick={() => handleClick(campaign.id)} className="px-2 py-2 rounded-full shadow-[0px_1px_2px_0.5px_black] bg-gradient-to-br from-[#ffffff] to-[#7bb4ff]"><MousePointer2 className="rotate-90"/></button>  
                 </td>
 
                 {/* CPA */}
