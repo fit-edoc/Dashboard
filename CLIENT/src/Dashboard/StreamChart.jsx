@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useData } from "../context/Datacontext";
+
+import { motion } from "motion/react";
 import {
   AreaChart,
   Area,
@@ -14,19 +16,22 @@ import { Eye, MousePointer2, DollarSign, TrendingUp } from "lucide-react";
 const MAX_POINTS = 50;
 
 const MetricCard = ({ title, value, icon: Icon, color }) => (
-  <div className="p-2 bg-[#a5ccff] rounded-xl">
-
-
-  <div className="bg-[#ffffff50] backdrop-blur-[20px] border border-white/20 rounded-[20px] p-4 flex items-center gap-4 shadow-lg">
-    <div className={`p-3 rounded-full ${color} bg-opacity-10`}>
-      <Icon size={24} className={color.replace("bg-", "text-")} />
+  <motion.div
+    initial={{ opacity: 0 }}
+    transition={{ duration: 1 }}
+    animate={{ opacity: 1 }}
+    className="p-2 bg-[#a5ccff] rounded-xl"
+  >
+    <div className="bg-[#ffffff50] backdrop-blur-[20px] border border-white/20 rounded-[20px] p-4 flex items-center gap-4 shadow-lg">
+      <div className={`p-3 rounded-full ${color} bg-opacity-10`}>
+        <Icon size={24} className={color.replace("bg-", "text-")} />
+      </div>
+      <div>
+        <p className="text-lg font-semibold text-gray-700">{title}</p>
+        <h3 className="text-xl font-bold text-indigo-950">{value}</h3>
+      </div>
     </div>
-    <div>
-      <p className="text-lg font-semibold text-gray-700">{title}</p>
-      <h3 className="text-xl font-bold text-indigo-950">{value}</h3>
-    </div>
-  </div>
-  </div>
+  </motion.div>
 );
 
 const StreamChart = ({ currentMetric = "impressions" }) => {
@@ -37,21 +42,20 @@ const StreamChart = ({ currentMetric = "impressions" }) => {
     clicks: 0,
     spend: 0,
     ctr: 0,
-    campaign_id:""
+    campaign_id: "",
   });
 
-
-  console.log(latestMetrics)
+  console.log(latestMetrics);
 
   useEffect(() => {
     if (!streams) return;
 
     const latest = streams;
-const date = new Date(latest.timestamp);
-const time = date.toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-});
+    const date = new Date(latest.timestamp);
+    const time = date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     const point = {
       time: time,
       impressions: latest.impressions,
@@ -61,7 +65,7 @@ const time = date.toLocaleTimeString([], {
       ctr: latest.ctr,
       cpc: latest.cpc,
       conversion_rate: latest.conversion_rate,
-       campaign_id:latest.campaign_id
+      campaign_id: latest.campaign_id,
     };
 
     setLatestMetrics({
@@ -69,7 +73,7 @@ const time = date.toLocaleTimeString([], {
       clicks: latest.clicks,
       spend: latest.spend,
       ctr: latest.ctr,
-      campaign_id:latest.campaign_id
+      campaign_id: latest.campaign_id,
     });
 
     setData((prev) => {
@@ -82,13 +86,35 @@ const time = date.toLocaleTimeString([], {
   if (data.length === 0)
     return (
       <div className="flex items-center justify-center h-full text-white/50">
-        Waiting for live stream...
+        Waiting for live stream...{" "}
+        <motion.svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-loader-3"
+        >
+          <motion.path  stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <motion.path initial={{pathLength:0}}
+        animate={{pathLength:1}}
+        transition={{repeat:Infinity, duration:0.5,repeatType:"reverse"}} d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" />
+          <motion.path initial={{pathLength:1}}
+        animate={{pathLength:0,rotate:360}}
+        transition={{repeat:Infinity, duration:1,repeatType:"reverse"}} d="M17 12a5 5 0 1 0 -5 5" />
+        </motion.svg>
       </div>
     );
 
   return (
     <div className="w-full h-full flex flex-col gap-6">
-      <h1 className="font-bold px-2 text-lg">{latestMetrics.campaign_id.toLocaleUpperCase()}</h1>
+      <h1 className="font-bold px-2 text-lg">
+        {latestMetrics.campaign_id.toLocaleUpperCase()}
+      </h1>
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
@@ -101,24 +127,24 @@ const time = date.toLocaleTimeString([], {
           title="Clicks"
           value={latestMetrics.clicks.toLocaleString()}
           icon={MousePointer2}
-            color="bg-white/20"
+          color="bg-white/20"
         />
         <MetricCard
           title="Spend"
           value={`$${latestMetrics.spend.toLocaleString()}`}
           icon={DollarSign}
-            color="bg-white/20"
+          color="bg-white/20"
         />
         <MetricCard
           title="CTR"
           value={`${latestMetrics.ctr}%`}
           icon={TrendingUp}
-            color="bg-white/20"
+          color="bg-white/20"
         />
       </div>
 
       {/* Chart Area */}
-      <div className="flex-1 min-h-[300px]  backdrop-blur-sm border border-white/10 rounded-2xl p-4 shadow-xl">
+      <div className="flex-1 min-h-[200px]  backdrop-blur-sm border border-white/10 rounded-2xl p-4 shadow-xl">
         <div className="mb-4 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-white capitalize">
             Live {currentMetric} Trends
@@ -130,7 +156,7 @@ const time = date.toLocaleTimeString([], {
           </div>
         </div>
 
-        <div className="h-[250px] w-full">
+        <div className="h-[200px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data}>
               <defs>
@@ -139,17 +165,20 @@ const time = date.toLocaleTimeString([], {
                   <stop offset="95%" stopColor="black" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="rgba(255,255,255,0.1)"
+              />
               <XAxis
                 dataKey="time"
                 stroke="#9ca3af"
-                tick={{ fill: 'black', fontSize: 12 }}
+                tick={{ fill: "black", fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
               />
               <YAxis
                 stroke="#9ca3af"
-                tick={{ fill: 'black', fontSize: 12 }}
+                tick={{ fill: "black", fontSize: 12 }}
                 tickLine={false}
                 axisLine={false}
               />

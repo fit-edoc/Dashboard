@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useData } from "../context/Datacontext";
-import { Activity, CheckCircle, PauseCircle } from "lucide-react";
-
+import { Activity, CheckCircle, MousePointer2, PauseCircle, Share2Icon } from "lucide-react";
+import {motion} from "motion/react"
+import { Link, useNavigate } from "react-router-dom";
 // Define the structure for the campaign data (using the expanded JSON structure)
 
 /**
@@ -39,8 +40,6 @@ const getAllPlatformIcons = (platforms) => {
   return [...new Set(iconPathsWithDuplicates)];
 };
 
-
-
 const getStatusClasses = (status) => {
   switch (status) {
     case "active":
@@ -53,42 +52,63 @@ const getStatusClasses = (status) => {
   }
 };
 
-const getStatusIcon = (status)=>{
-  switch (status){
+const getStatusIcon = (status) => {
+  switch (status) {
     case "active":
-      return <Activity className="text-green-900" size={20}/>;
-      case "paused":
-      return  <PauseCircle size={20}/>;
-      case  "completed":
-        return <CheckCircle className="bg-green-500 rounded-full text-gray-100" size={20}/>
+      return (
+        <motion.svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="icon icon-tabler icons-tabler-outline icon-tabler-activity"
+        >
+          <motion.path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <motion.path 
+          initial={{pathLength:"none"}}
+        animate={{pathLength:[0,1],stroke:["green"]}}
+        transition={{repeat:Infinity, duration:3,repeatType:"reverse",ease:"easeInOut"}} d="M3 12h4l3 8l4 -16l3 8h4" />
+        </motion.svg>
+      );
+    case "paused":
+      return <PauseCircle size={20} />;
+    case "completed":
+      return (
+        <CheckCircle
+          className="bg-green-500 rounded-full text-gray-100"
+          size={20}
+        />
+      );
   }
-}
-
-
+};
 
 // Main Component
-const CampaignTable = ( {campaign}) => {
+const CampaignTable = ({ campaign }) => {
 
 
-const {getStreamsById} = useData()
 
-
-  
+  const navigate = useNavigate()
+  const { getStreamsById } = useData();
 
   const handleClick = (id) => {
     getStreamsById(id);
-    console.log(id)
+    navigate(`/single/${id}`);
+ 
+    
   };
 
   return (
-
-
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="flex justify-between px-3 items-end">
-      <h2 className="text-2xl font-bold  mb-6">
-        Campaign Dashboard Summary
-      </h2>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Campaigns ({campaign.length})</h2>
+        <h2 className="text-2xl font-bold  mb-6">Campaign Dashboard Summary</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          Campaigns ({campaign.length})
+        </h2>
       </div>
       <div className="overflow-x-auto shadow-xl rounded-2xl border border-gray-100">
         <table className="min-w-full divide-y  bg-[#ffffff66] backdrop-blur-2xl">
@@ -125,16 +145,21 @@ const {getStreamsById} = useData()
               >
                 Daily-Budget
               </th>
-            
+                <th
+                scope="col"
+                className="px-6 py-3 text-right text-xs font-bold text-white uppercase tracking-wider"
+              >
+                get Info
+              </th>
             </tr>
           </thead>
 
           {/* Table Body */}
           <tbody className=" bg-gradient-to-b  via-[#98c4ff] from-teal-50 backdrop-blur-sm divide-y  divide-gray-700">
             {campaign.map((campaign) => (
-              <tr 
-              onClick={()=>handleClick(campaign.id)}
-                key={campaign.id} 
+              <tr
+                onClick={() => handleClick(campaign.id)}
+                key={campaign.id}
                 className="hover:bg-[#597a827b]  transition duration-150"
               >
                 {/* Name */}
@@ -185,6 +210,13 @@ const {getStreamsById} = useData()
                 </td>
 
                 {/* Conversions */}
+                
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">
+               <Link to={"/single"}>
+               
+               
+              <button className="px-2 py-2 rounded-full shadow-[0px_1px_2px_0.5px_black] bg-gradient-to-br from-[#ffffff] to-[#7bb4ff]"><MousePointer2 className="rotate-90"/></button>  </Link> 
+                </td>
 
                 {/* CPA */}
               </tr>

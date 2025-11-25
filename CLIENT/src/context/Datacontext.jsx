@@ -8,6 +8,7 @@ export const DataProdiver = ({ children }) => {
 
     // --- STATE ---
     const [campaign, setCampaign] = useState([]);
+    const [selectcampaign,setSelectCampaign] = useState([])
     const [streams, setStreams] = useState(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -36,8 +37,9 @@ export const DataProdiver = ({ children }) => {
             }
         };
     }, []);
+    console.log("current item",selectcampaign)
 
-    const getStreamsById = (id) => {
+    const getStreamsById = async(id) => {
         setLoading(true);
         setError(null);
 
@@ -47,6 +49,8 @@ export const DataProdiver = ({ children }) => {
         }
 
         try {
+            const res = await axios.get(`https://mixo-fe-backend-task.vercel.app/campaigns/${id}`)
+            setSelectCampaign(res.data.campaign)
             const url = `https://mixo-fe-backend-task.vercel.app/campaigns/${id}/insights/stream`;
             const eventSource = new EventSource(url);
             eventSourceRef.current = eventSource;
@@ -82,7 +86,8 @@ export const DataProdiver = ({ children }) => {
     // --- CONTEXT VALUE ---
     const value = {
         campaign,             // Array of static campaign list data
-        streams,              // Array of real-time stream data points
+        streams,  
+        selectcampaign,            // Array of real-time stream data points
         getStreamsById       // Function to stop polling
         // getCampaignById is not used in the UI flow, so we can omit it for brevity
     };
