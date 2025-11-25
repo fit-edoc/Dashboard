@@ -3,7 +3,7 @@ import { useData } from "../context/Datacontext";
 import { Activity, CheckCircle, MousePointer2, PauseCircle, Share2Icon } from "lucide-react";
 import {motion} from "motion/react"
 import { Link, useNavigate } from "react-router-dom";
-// Define the structure for the campaign data (using the expanded JSON structure)
+
 
 /**
  * Maps an array of platform names to an array of unique image paths.
@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
  * @returns {string[]} An array of image paths corresponding to the platforms.
  */
 const getAllPlatformIcons = (platforms) => {
-  // Define a map for all known platforms and their icon paths
+ 
   const platformIconMap = {
     meta: "./images/meta.png",
     facebook: "./images/meta.png",
@@ -20,8 +20,8 @@ const getAllPlatformIcons = (platforms) => {
     youtube: "./images/google.png",
     google_ads: "./images/google.png",
     linkedin: "./images/linkedin.png",
-    email: "./images/email.png", // Example of a new icon
-    // Define a fallback for any platform not explicitly listed
+    email: "./images/email.png", 
+    
     default: "./images/enterprise.png",
   };
 
@@ -29,14 +29,14 @@ const getAllPlatformIcons = (platforms) => {
     return []; // Return an empty array if no platforms are present
   }
 
-  // 1. Map platform names to their icon paths
+ 
   const iconPathsWithDuplicates = platforms.map((platform) => {
     const key = platform;
-    // Return the specific icon path, or the 'default' icon if the key is not found
+  
     return platformIconMap[key] || platformIconMap["default"];
   });
 
-  // 2. Use a Set to filter out duplicate paths (e.g., if "meta" and "facebook" are both present)
+ 
   return [...new Set(iconPathsWithDuplicates)];
 };
 
@@ -106,8 +106,8 @@ const CampaignTable = ({ campaign }) => {
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="flex justify-between px-3 items-end">
         <h2 className="text-2xl font-bold  mb-6">Campaign Dashboard Summary</h2>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Campaigns ({campaign.length})
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 flex gap-1">
+          Campaigns <p className="text-sky-600">({campaign.length})</p>
         </h2>
       </div>
       <div className="overflow-x-auto shadow-xl rounded-2xl border border-gray-100">
@@ -215,7 +215,7 @@ const CampaignTable = ({ campaign }) => {
              
                
                
-              <button    onClick={() => handleClick(campaign.id)} className="px-2 py-2 rounded-full shadow-[0px_1px_2px_0.5px_black] bg-gradient-to-br from-[#ffffff] to-[#7bb4ff]"><MousePointer2 className="rotate-90"/></button>  
+              <button    onClick={() => handleClick(campaign.id)} className="px-2 py-2 rounded-full shadow-[0px_1px_2px_0.5px_black] bg-gradient-to-br from-[#ffffff] to-[#7bb4ff] hover:scale-110 transition-all duration-150 "><MousePointer2 className="rotate-90"/></button>  
                 </td>
 
                 {/* CPA */}

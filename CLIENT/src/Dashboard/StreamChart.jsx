@@ -45,7 +45,7 @@ const StreamChart = ({ currentMetric = "impressions" }) => {
     campaign_id: "",
   });
 
-  console.log(latestMetrics);
+
 
   useEffect(() => {
     if (!streams) return;

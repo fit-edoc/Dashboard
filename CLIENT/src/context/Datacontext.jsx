@@ -19,31 +19,31 @@ export const DataProdiver = ({ children }) => {
     const getCampaign = async () => {
         try {
             const res = await axios.get("https://mixo-fe-backend-task.vercel.app/campaigns");
-            // API response structure seems to be { campaigns: [...] }
+           
             setCampaign(res.data.campaigns);
         } catch (error) {
             console.error("Error fetching campaigns:", error);
         }
     };
 
-    // Initial load of static campaign list
+  
     useEffect(() => {
         getCampaign();
 
-        // Cleanup function to close EventSource when component unmounts
+     
         return () => {
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
         };
     }, []);
-    console.log("current item",selectcampaign)
+  
 
     const getStreamsById = async(id) => {
         setLoading(true);
         setError(null);
 
-        // Close existing connection if any
+       
         if (eventSourceRef.current) {
             eventSourceRef.current.close();
         }
@@ -83,13 +83,13 @@ export const DataProdiver = ({ children }) => {
         }
     };
 
-    // --- CONTEXT VALUE ---
+
     const value = {
-        campaign,             // Array of static campaign list data
+        campaign,             
         streams,  
-        selectcampaign,            // Array of real-time stream data points
-        getStreamsById       // Function to stop polling
-        // getCampaignById is not used in the UI flow, so we can omit it for brevity
+        selectcampaign,            
+        getStreamsById       
+       
     };
 
     return (
